@@ -8,9 +8,9 @@ import {
 
 export async function register(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!username || !email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         message: "Name, email and password are required"
       });
@@ -32,7 +32,7 @@ export async function register(req, res) {
 
     const user = await prisma.user.create({
       data: {
-        username,
+        name,
         email,
         passwordHash
       }
@@ -42,14 +42,13 @@ export async function register(req, res) {
       message: "Registration successful",
       user: {
         id: user.id,
-        username: user.username,
+        name: user.name,
         email: user.email
       }
     });
 
   } catch (error) {
     console.error(error);
-
     return res.status(500).json({
       message: "Internal server error"
     });
